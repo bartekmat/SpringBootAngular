@@ -1,5 +1,5 @@
 <div class="container">
-    <form [formGroup]="bikeform" (ngSubmit)="submitRegistration()" novalidate>
+    <form [formGroup]="bikeForm" (ngSubmit)="submitRegistration()" novalidate>
       <div *ngIf="validMessage != ''">
         <h3 class="has-info">{{validMessage}}</h3>
       </div>

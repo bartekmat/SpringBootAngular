@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BikeService } from '../../services/bike.service';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -26,10 +27,27 @@ export class HomeComponent implements OnInit {
       phone: new FormControl('', Validators.required),
       model: new FormControl('', Validators.required),
       serialNumber: new FormControl('', Validators.required),
-      PurchassPrice: new FormControl('', Validators.required),
+      purchasePrice: new FormControl('', Validators.required),
       purchaseDate: new FormControl('', Validators.required),
       contact: new FormControl()
     });
+  }
+
+  submitRegistration(){
+    if(this.bikeForm.valid){
+      this.bikeService.createBikeRegistration(this.bikeForm.value).subscribe(
+        data => {
+          this.bikeForm.reset();
+          return true;
+        },
+        err => {
+          return Observable.throw(err);
+        }
+      );
+      this.validMessage = 'Your bike registration has been submitted. Thanks!'
+    }else{
+      this.validMessage = 'Please fill out the form before submitting'
+    }
   }
 
 }
