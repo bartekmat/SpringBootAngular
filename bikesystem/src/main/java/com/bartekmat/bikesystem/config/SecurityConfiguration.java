@@ -11,13 +11,34 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Value(value = "${auth0.apiAudience}")
+    @Value(value = "http://localhost:8080")
     private String apiAudience;
-    @Value(value = "${auth0.issuer}")
+    @Value(value = "https://dev-yisrgddj.eu.auth0.com/")
     private String issuer;
+
+//    @Bean
+//    JwtDecoder jwtDecoder() {
+//        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
+//                JwtDecoders.fromOidcIssuerLocation(issuer);
+//
+//        OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(apiAudience);
+//        OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuer);
+//        OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
+//
+//        jwtDecoder.setJwtValidator(withAudience);
+//
+//        return jwtDecoder;
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .mvcMatchers(HttpMethod.POST,"/api/v1/bikes").permitAll()
+//                .mvcMatchers(HttpMethod.GET, "/api/v1/bikes").hasAuthority("view:registrations")
+//                .mvcMatchers(HttpMethod.GET, "/api/v1/bikes/**").hasAuthority("view:registration")
+//                .and()
+//                .oauth2ResourceServer().jwt();
+
         JwtWebSecurityConfigurer
                 .forRS256(apiAudience, issuer)
                 .configure(http)

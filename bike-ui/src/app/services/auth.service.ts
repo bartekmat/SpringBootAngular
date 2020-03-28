@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import 'rxjs/add/operator/filter';
+import { filter } from 'rxjs/operators';
 import * as auth0 from 'auth0-js';
 
 @Injectable()
 export class AuthService {
 
   auth0 = new auth0.WebAuth({
-    clientID: 'uJ1u4txtxFeop1oBkuOM29oDM3HN7dtp',
-    domain: 'bartekmat.eu.auth0.com',
+    clientID: 'eAauupnm6MiNuLXrQ6ryLfu6FentepIG',
+    domain: 'dev-yisrgddj.eu.auth0.com',
     responseType: 'token id_token',
     audience: 'http://localhost:8080',
     redirectUri: 'http://localhost:4200/callback',
@@ -26,6 +26,7 @@ export class AuthService {
       if (authResult && authResult.accessToken && authResult.idToken) {
         window.location.hash = '';
         this.setSession(authResult);
+        console.log('dfsdfsfds')
         this.router.navigate(['/admin']);
       } else if (err) {
         this.router.navigate(['/admin']);
@@ -36,7 +37,7 @@ export class AuthService {
 
   private setSession(authResult): void {
     // Set the time that the access token will expire at
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    const expiresAt = JSON.stringify((authResult.expiresIn * 60) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
